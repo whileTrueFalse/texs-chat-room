@@ -1,0 +1,57 @@
+{% extends 'base.html' %} {% block content %}
+<div class="message-box">
+  <h2 class="ui center aligned icon header" style="margin-top: 5px;">
+    The Chat Rooms
+    <i class="users icon"></i>
+    <h3 class="ui center aligned icon header" style="margin-top: -17px;">Chat Room code is: {{code}}</h3></h2>
+  <div class="messages" id="messages"></div>
+  <div class="ui input">
+    <input
+      type="text"
+      rows="3"
+      placeholder="Type your message here..."
+      name="message"
+      id="message"
+    />
+    <button type="button" name="send" id="send-btn" class="ui black button" onClick="sendMessage()">
+      Send </button>
+  </div>
+</div>
+</div>
+<div class="made"><p>Made with Flask and Semantic UI</p></div>
+
+<script type="text/javascript">
+  var socketio = io();
+
+  const messages = document.getElementById("messages");
+
+  const createMessage = (name, msg) => {
+    const content = `
+    <div class="text">
+        <span>
+            <strong>${name}</strong>: ${msg}
+        </span>
+        <span class="muted">
+            ${new Date().toLocaleString()}
+        </span>
+    </div>
+    `;
+    messages.innerHTML += content;
+  };
+
+  socketio.on("message", (data) => {
+    createMessage(data.name, data.message);
+  });
+
+  const sendMessage = () => {
+    const message = document.getElementById("message");
+    if (message.value == "") return;
+    socketio.emit("message", { data: message.value });
+    message.value = "";
+  };
+</script>
+{% for msg in messages %}
+<script type="text/javascript">
+  createMessage("{{msg.name}}", "{{msg.message}}");
+</script>
+{% endfor %} {% endblock %}

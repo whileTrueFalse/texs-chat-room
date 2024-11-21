@@ -1,0 +1,26 @@
+{% extends 'base.html'%}
+{% block content %}
+
+<div class="ui segment">
+    <h3 class="ui center aligned icon header"><i class="users icon"></i>
+        Chat Room Dashboard</h3>
+<form method="post" class="ui large form">
+    <div class=" ui secondary segment">
+        <input type="text" placeholder="Pick a Username" name="name" value="{{name}}"/>
+    <div class="join">
+        <input type="text" placeholder="Enter Code to join the Chat Room" name="code" value="{{code}}"/>
+    </div>
+    
+    <div class="home-btn">
+    <button type="submit" name="join" class= "ui black button">Join a Room</button>
+    <button type="submit" name="create" class= "ui black button">Create a Room</button>
+    </div>
+    <br>
+    {% if error %}
+        <p>{{error}}</p>
+    {% endif %}
+</div>
+</form>
+</div>
+<div class="made"><p>Made with Flask and Semantic UI</p></div>
+{% endblock %}
